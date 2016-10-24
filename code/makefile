@@ -6,4 +6,7 @@ SETL:	SETL.c
 genWorld:	genWorld.c
 	gcc -o genWorld genWorld.c
 
+run: SETL genWorld
+	./SETL ../data/simple.w 2 ../data/simple.p
+
 
