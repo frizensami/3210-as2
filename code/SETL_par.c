@@ -4,6 +4,8 @@
 #include <time.h>
 #include <sys/time.h>
 
+#include "mpi.h"
+
 #define DEBUG
 // #define DEBUGMORE
 
@@ -100,6 +102,9 @@ int main( int argc, char** argv)
     int size, patternSize;
     long long before, after;
     MATCHLIST*list;
+
+    // Parallelism-related variables
+    int numtasks, rank;
     
     if (argc < 4 ){
         fprintf(stderr, 
@@ -107,6 +112,13 @@ int main( int argc, char** argv)
         exit(1);
     } 
 
+    // MPI - Initialization
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    // Print out MPI Information
+    printf("===> Current process rank: %d\n", rank);
 
     // Allocate the current world and the next world
     curW = readWorldFromFile(argv[1], &size);
@@ -168,7 +180,7 @@ int main( int argc, char** argv)
     //Stop timer
     after = wallClockTime();
 
-    printf("Sequential SETL took %1.2f seconds\n", 
+    printf("Parallel SETL took %1.2f seconds\n", 
         ((float)(after - before))/1000000000);
 
 
@@ -182,6 +194,9 @@ int main( int argc, char** argv)
     freeSquareMatrix( patterns[1] );
     freeSquareMatrix( patterns[2] );
     freeSquareMatrix( patterns[3] );
+
+    // Finalize MPI
+    MPI_Finalize();
 
     return 0;
 }

@@ -1,0 +1,7 @@
+Parallelize SETL:
+
+Heavy computation methods: 
+- Searching for pattern
+- Evolving next iteration
+
+--> Both can be done in parallel
