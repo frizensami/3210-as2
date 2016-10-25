@@ -21,6 +21,7 @@ char** allocateSquareMatrix( int size, char defaultValue )
     if (contiguous == NULL)
         die(__LINE__);
 
+    //printf("Address of contiguous block: %p\n", contiguous);
 
     memset(contiguous, defaultValue, size * size );
 
