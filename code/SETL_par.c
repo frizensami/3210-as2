@@ -54,8 +54,8 @@ int main( int argc, char** argv)
     MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (numprocs != 2 && numprocs != 3) {
-        printf("Incorrect number of processors, got %d: only 2 or 3 accepted for now\n", numprocs);
+    if (numprocs < 2) {
+        printf("Incorrect number of processors, got %d: must be > 2\n", numprocs);
         exit(1);
     }
 
@@ -151,22 +151,25 @@ int main( int argc, char** argv)
     // Processor 1: Does evolution (part 1 or all)
     // Processor 2: Does evolution (part 2)
 
+
     // All processors iterate
     for (iter = 0; iter < iterations; iter++) {
+        int process_to_send_evolution = (iter % (numprocs - 1)) + 1;
         if (rank == ROOT_PROCESS) {
             // Definitely doing pattern searching
 
+            printf("Process that should send evolution: %d\n", process_to_send_evolution);
             // Search the current iteration
             searchPatterns( curW, size, iter, patterns, patternSize, list);
 
             MPI_Status status;
             // Receive the new world from the other processor
-            MPI_Recv(curW[0], (size + 2) * (size + 2), MPI_CHAR, 1, 1, MPI_COMM_WORLD, &status);
+            MPI_Recv(curW[0], (size + 2) * (size + 2), MPI_CHAR, process_to_send_evolution, iter, MPI_COMM_WORLD, &status);
 
-        } else if (rank == 1) {
+        } else if (rank >= 1) {
 
-            // evolves the current world
-            evolveWorld( curW, nextW, size );
+            // everyone evolves the current world
+            evolveWorld( curW, nextW, size);
 
             // Make the "current world" be the evolved nextW world
             // Reuse the previous current world space by making it the "next world"
@@ -174,8 +177,12 @@ int main( int argc, char** argv)
             curW = nextW;
             nextW = temp;
 
-            // Send the evolved world back
-            MPI_Send(curW[0], (size + 2) * (size + 2), MPI_CHAR, 0, 1, MPI_COMM_WORLD);
+            // Take turns with other processes to send the data back
+            if (rank == process_to_send_evolution) {
+
+                // Send the evolved world back
+                MPI_Send(curW[0], (size + 2) * (size + 2), MPI_CHAR, ROOT_PROCESS, iter, MPI_COMM_WORLD);
+            }
         }
     }
 
