@@ -16,7 +16,7 @@ runseq: SETL
 	./SETL ../data/simple.w 10 ../data/simple.p
 
 runlarge: SETL_par
-	mpirun -np 2 ./SETL_par ../data/random1000.w 10 ../data/simple.p
+	mpirun -np 5 ./SETL_par ../data/random1000.w 10 ../data/simple.p
 
 runlargeseq: SETL
 	./SETL ../data/random1000.w 10 ../data/simple.p

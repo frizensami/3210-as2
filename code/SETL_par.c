@@ -9,7 +9,7 @@
 #include "match.h"
 #include "search.h"
 
-#define DEBUG
+//#define DEBUG
 // #define DEBUGMORE
 
 
