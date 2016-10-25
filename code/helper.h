@@ -1,3 +1,6 @@
+#ifndef HELPER_H
+#define HELPER_H
+
 /***********************************************************
   Helper functions
 ***********************************************************/
@@ -7,3 +10,5 @@ void die(int lineNo);
 
 //For trackinng execution
 long long wallClockTime();
+
+#endif
