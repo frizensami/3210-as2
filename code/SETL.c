@@ -155,6 +155,9 @@ int main( int argc, char** argv)
         // Generate next generation
         evolveWorld( curW, nextW, size );
 
+        //printSquareMatrix(nextW, size+2);
+        //printf("\n");
+
         // Make the "current world" be the evolved nextW world
         // Reuse the previous current world space by making it the "next world"
         temp = curW;

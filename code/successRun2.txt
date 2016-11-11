@@ -1,0 +1,144 @@
+mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
+I am the root process! Starting transfer.
+===> Not a root process, rank: 1 out of 2
+World Size = 20
+Iterations = 10
+Pattern size = 3
+Patterns (N, E, S, W): 
+Effective size: 20. Size with padding: 22
+Each processor must effectively take: 10 rowsBut with padding in front and behind, each must take: 12 rows
+Process: 0 - Patternsize: 3, Size: 20, Iterations: 10
+Rank 0 received current World: 
+OOOOOOOOOOOOOOOOOOOOOO
+OOXOOOOXXOOOOOOOOOOOOO
+OOOXOOOXXOOOOOOOOOOOOO
+OXXXOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXXXOOOOOOOOOOOOOOXOOO
+OOOOOOOOOOOOOOOOOOXOOO
+OOOOOOOOOOOOOOOOOOXOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+Process: 1 - Patternsize: 3, Size: 20, Iterations: 10
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOXO
+OXOOOOOOOOOOOOOOOOOOXO
+OXXOOOOOOOOOOOOOOOOXXO
+OOOOOOOOOOOOOOOOOOOOOO
+
+Rank 1 received current World: 
+OOOOOOOOOOOOOOOOOOOOOO
+OOXOOOOXXOOOOOOOOOOOOO
+OOOXOOOXXOOOOOOOOOOOOO
+OXXXOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXXXOOOOOOOOOOOOOOXOOO
+OOOOOOOOOOOOOOOOOOXOOO
+OOOOOOOOOOOOOOOOOOXOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOXO
+OXOOOOOOOOOOOOOOOOOOXO
+OXXOOOOOOOOOOOOOOOOXXO
+OOOOOOOOOOOOOOOOOOOOOO
+
+Processor rank 0 doing rows 1 - 12 inclusive out of halo-ed size 22, original start address: 0xbc3ac0,  current start: 0xbc3ad6, rowStart: 0x7fff493736e8
+Processor rank 1 doing rows 11 - 20 inclusive out of halo-ed size 22, original start address: 0xf65c30,  current start: 0xf65d22, rowStart: 0x7ffe79a41ca8
+Processor rank 1: searchPatternsNonSquare(&rowStart: 0x7ffe79a41ca8, numRowsPerProcessor: 10, size: 20, iter: 0, patterns: 0x7ffe79a41ce0, patternSize: 3, list: 0xf53900
+Processor rank 0: searchPatternsNonSquare(&rowStart: 0x7fff493736e8, numRowsPerProcessor: 10, size: 20, iter: 0, patterns: 0x7fff49373720, patternSize: 3, list: 0xbbd880
+Rank 1 starting to evolve world at address: 0xf65fd2
+Evolving non square world: startrow = 11, endRow = 20, wCols = 20
+Rank 1 done evolving world: World = 
+Rank 0 starting to evolve world at address: 0xbc3d86
+Evolving non square world: startrow = 1, endRow = 10, wCols = 20
+Rank 1 - rowToSendStart: 11 rowToSendEnd 20 elementsToSend: 220
+Rank 0 done evolving world: World = 
+Rank 0 - rowToSendStart: 1 rowToSendEnd 10 elementsToSend: 220
+Rank 0 done allgathering: World = 
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOXXOOOOOOOOOOOOO
+OXOXOOOXXOOOOOOOOOOOOO
+OOXXOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOXXXOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXXOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOXO
+OXXOOOOOOOOOOOOOOOOXXO
+OOOOOOOOOOOOOOOOOOOOOO
+
+Rank 1 done allgathering: World = 
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOXXOOOOOOOOOOOOO
+OXOXOOOXXOOOOOOOOOOOOO
+OOXXOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOOOOOO
+OOXOOOOOOOOOOOOOOXXXOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXXOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OOOOOOOOOOOOOOOOOOOOOO
+OXOOOOOOOOOOOOOOOOOOXO
+OXXOOOOOOOOOOOOOOOOXXO
+OOOOOOOOOOOOOOOOOOOOOO
+
+--------------------------------------------------------------------------
+mpirun has exited due to process rank 1 with PID 20918 on
+node sriram-G551JK exiting improperly. There are three reasons this could occur:
+
+1. this process did not call "init" before exiting, but others in
+the job did. This can cause a job to hang indefinitely while it waits
+for all processes to call "init". By rule, if one process calls "init",
+then ALL processes must call "init" prior to termination.
+
+2. this process called "init", but exited without calling "finalize".
+By rule, all processes that call "init" MUST call "finalize" prior to
+exiting or it will be considered an "abnormal termination"
+
+3. this process called "MPI_Abort" or "orte_abort" and the mca parameter
+orte_create_session_dirs is set to false. In this case, the run-time cannot
+detect that the abort call was an abnormal termination. Hence, the only
+error message you will receive is this one.
+
+This may have caused other processes in the application to be
+terminated by signals sent by mpirun (as reported here).
+
+You can avoid this message by specifying -quiet on the mpirun command line.
+
+--------------------------------------------------------------------------
+makefile:13: recipe for target 'run' failed

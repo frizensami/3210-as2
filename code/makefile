@@ -10,7 +10,13 @@ genWorld:	genWorld.c
 	gcc -o genWorld genWorld.c
 
 run: SETL_par
+	mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
+
+run5: SETL_par
 	mpirun -np 5 ./SETL_par ../data/simple.w 10 ../data/simple.p
+
+run10: SETL_par
+	mpirun -np 10 ./SETL_par ../data/simple.w 10 ../data/simple.p
 
 runseq: SETL
 	./SETL ../data/simple.w 10 ../data/simple.p

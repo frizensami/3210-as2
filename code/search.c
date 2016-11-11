@@ -97,3 +97,49 @@ printf("*** FOUND PATTERN @ Row = %d, Col = %d\n", wRow-1, wCol-1);
         }
     }
 }
+
+// For each direction - sets off a searchSinglePattern on that direction
+void searchPatternsNonSquare(char** world, int startRow, int endRow, int wCols, int iteration,
+        char** patterns[4], int pSize, MATCHLIST* list)
+{
+    int dir;
+
+    for (dir = N; dir <= W; dir++){
+        searchSinglePatternNonSquare(world, startRow, endRow, wCols, iteration,
+                patterns[dir], pSize, dir, list);
+    }
+
+}
+
+void searchSinglePatternNonSquare(char** world, int startRow, int endRow, int wCols, int iteration,
+        char** pattern, int pSize, int rotation, MATCHLIST* list)
+{
+    int wRow, wCol, pRow, pCol, match;
+
+
+    for (wRow = startRow; wRow <= (endRow-pSize+1); wRow++){
+        for (wCol = 1; wCol <= (wCols-pSize+1); wCol++){
+            match = 1;
+#ifdef DEBUGMORE
+            printf("Searching:(%d, %d)\n", wRow-1, wCol-1);
+#endif
+            for (pRow = 0; match && pRow < pSize; pRow++){
+                for (pCol = 0; match && pCol < pSize; pCol++){
+                    if(world[wRow+pRow][wCol+pCol] != pattern[pRow][pCol]){
+#ifdef DEBUGMORE
+                        printf("\tFailed:(%d, %d) %c != %c\n", pRow, pCol,
+                            world[wRow+pRow][wCol+pCol], pattern[pRow][pCol]);
+#endif
+                        match = 0;
+                    }
+                }
+            }
+            if (match){
+                insertEnd(list, iteration, wRow-1, wCol-1, rotation);
+#ifdef DEBUGMORE
+printf("*** FOUND PATTERN @ Row = %d, Col = %d\n", wRow-1, wCol-1);
+#endif
+            }
+        }
+    }
+}

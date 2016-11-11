@@ -7,6 +7,23 @@
    Simple circular linked list for match records
 ***********************************************************/
 
+// Convert a matchlist to a contiguous array of ints
+int* matchlistToArray( MATCHLIST* list ) {
+    int n = list->nItem;
+    int* matchArray = malloc(4 * (list->nItem) * sizeof(int) );
+
+    MATCH* current = list->tail;
+    for (int i = 0; i < n*4; i+=4) {
+        matchArray[i] = current->iteration;
+        matchArray[i+1] = current->row;
+        matchArray[i+2] = current->col;
+        matchArray[i+3] = current->rotation;
+        current = current->next;
+    }
+
+    return matchArray;
+}
+
 MATCHLIST* newList()
 {
     MATCHLIST* list;
@@ -79,5 +96,11 @@ void printList(MATCHLIST* list)
     for( i = 0; i < list->nItem; i++, cur=cur->next){
         printf("%d:%d:%d:%d\n",
                 cur->iteration, cur->row, cur->col, cur->rotation);
+    }
+}
+
+void printMatchArray(int* matchArray, int elements) {
+    for (int i = 0; i < elements*4; i+=4) {
+        printf("%d:%d:%d:%d\n", matchArray[i], matchArray[i+1], matchArray[i+2], matchArray[i+3]);
     }
 }

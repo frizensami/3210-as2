@@ -22,4 +22,9 @@ void searchPatterns(char** world, int wSize, int iteration,
 void searchSinglePattern(char** world, int wSize, int interation,
         char** pattern, int pSize, int rotation, MATCHLIST* list);
 
+void searchPatternsNonSquare(char** world, int startRow, int endRow, int wCols, int iteration,
+        char** patterns[4], int pSize, MATCHLIST* list);
+
+void searchSinglePatternNonSquare(char** world, int startRow, int endRow, int wCols, int interation,
+        char** pattern, int pSize, int rotation, MATCHLIST* list);
 #endif

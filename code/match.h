@@ -15,6 +15,8 @@ typedef struct {
     MATCH* tail;
 } MATCHLIST;
 
+int* matchlistToArray( MATCHLIST* list );
+
 MATCHLIST* newList();
 
 void deleteList( MATCHLIST*);
@@ -22,5 +24,9 @@ void deleteList( MATCHLIST*);
 void insertEnd(MATCHLIST*, int, int, int, int);
 
 void printList(MATCHLIST*);
+
+void printMatchArray(int*, int);
+
+void insertSorted(MATCHLIST*, int*, int);
 
 #endif

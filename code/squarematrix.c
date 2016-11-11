@@ -4,6 +4,8 @@
 
 #include "helper.h"
 
+//#define SQUAREDEBUG
+
 /***********************************************************
   Square matrix related functions, used by both world and pattern
 ***********************************************************/
@@ -43,6 +45,9 @@ void printSquareMatrix( char** matrix, int size )
     int i,j;
 
     for (i = 0; i < size; i++){
+#ifdef SQUAREDEBUG
+        printf("%d: ", i);
+#endif
         for (j = 0; j < size; j++){
             printf("%c", matrix[i][j]);
         }

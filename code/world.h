@@ -14,4 +14,6 @@ int countNeighbours(char** world, int row, int col);
 
 void evolveWorld(char** curWorld, char** nextWorld, int size);
 
+void evolveWorldNonSquare(char** curWorld, int startRow, char** nextWorld, int wRows, int wCols);
+
 #endif
