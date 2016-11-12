@@ -12,6 +12,9 @@ genWorld:	genWorld.c
 run: SETL_par
 	mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
 
+runlong: SETL_par
+	mpirun -np 2 ./SETL_par ../data/simple.w 20 ../data/simple.p
+
 run5: SETL_par
 	mpirun -np 5 ./SETL_par ../data/simple.w 10 ../data/simple.p
 
@@ -26,4 +29,7 @@ runlarge: SETL_par
 
 runlargeseq: SETL
 	./SETL ../data/random1000.w 10 ../data/simple.p
+
+runlongseq: SETL
+	./SETL ../data/simple.w 20 ../data/simple.p
 

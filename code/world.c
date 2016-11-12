@@ -88,7 +88,7 @@ void evolveWorldNonSquare(char** curWorld, int startRow, char** nextWorld, int e
 {
     // Note: The scanning will occur inclusive of curWorld[startRow - 1]
     int i, j, liveNeighbours;
-    printf("Evolving non square world: startrow = %d, endRow = %d, wCols = %d\n", startRow, endRow, wCols);
+    //printf("Evolving non square world: startrow = %d, endRow = %d, wCols = %d\n", startRow, endRow, wCols);
 
     for (i = startRow; i <= endRow; i++){
         for (j = 1; j <= wCols; j++){

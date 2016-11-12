@@ -63,7 +63,7 @@ int main( int argc, char** argv)
     // printf("===> Current process rank: %d out of %d\n", rank, numprocs);
 
     if (rank == ROOT_PROCESS) {
-        printf("I am the root process! Starting transfer.\n");
+        //printf("I am the root process! Starting transfer.\n");
 
         /*************************
             File operations
@@ -109,13 +109,13 @@ int main( int argc, char** argv)
         printSquareMatrix(curW, size + 2);
 #endif
 
-        printf("Effective size: %d. Size with padding: %d\n", size, size+2);
-        printf("Each processor must effectively take: %d rows", size / numprocs);
-        printf("But with padding in front and behind, each must take: %d rows\n", size / numprocs + 2);
+        //printf("Effective size: %d. Size with padding: %d\n", size, size+2);
+        //printf("Each processor must effectively take: %d rows", size / numprocs);
+       //printf("But with padding in front and behind, each must take: %d rows\n", size / numprocs + 2);
 
 
     } else {
-        printf("===> Not a root process, rank: %d out of %d\n", rank, numprocs);
+        //printf("===> Not a root process, rank: %d out of %d\n", rank, numprocs);
     }
 
 
@@ -149,7 +149,7 @@ int main( int argc, char** argv)
     MPI_Bcast(&size, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
     MPI_Bcast(&iterations, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
 
-    printf("Process: %d - Patternsize: %d, Size: %d, Iterations: %d\n", rank, patternSize, size, iterations);
+    //printf("Process: %d - Patternsize: %d, Size: %d, Iterations: %d\n", rank, patternSize, size, iterations);
 
     // For all non-root processes - need to allocate arrays
     if (rank != ROOT_PROCESS) {
@@ -173,7 +173,7 @@ int main( int argc, char** argv)
 
     // For this algo iter: broadcast the entire board and patterns
     MPI_Bcast(curW[0], (size + 2) * (size + 2), MPI_CHAR, ROOT_PROCESS, MPI_COMM_WORLD);
-
+/*
     for (int proc = 0; proc < numprocs; proc++) {
         if (proc == rank) {
             printf("Rank %d received current World: \n", rank);
@@ -183,7 +183,7 @@ int main( int argc, char** argv)
             MPI_Barrier(MPI_COMM_WORLD);
         }
     }
-
+*/
     // At this point: Every process has all the relevant data to perform computations
     // Processes just must know what their role is in the overall scheme of things
     // Processor 0: Always does pattern searching
@@ -232,7 +232,7 @@ int main( int argc, char** argv)
     //char* nextWRowStart = (*nextW) + (startRow * (size + 2));
     //printf("Startrow: %d. Sizeof(char): %d, size + 2: %d\n", startRow, sizeof(char), size+2);
 
-    printf("Processor rank %d doing rows %d - %d inclusive out of halo-ed size %d\n", rank, startRow, endRow, size+2);
+    //printf("Processor rank %d doing rows %d - %d inclusive out of halo-ed size %d\n", rank, startRow, endRow, size+2);
     // Rows = numRowsPerProcessor, Size = Cols
     //printf("Processor rank %d: searchPatternsNonSquare(&rowStart: %p, numRowsPerProcessor: %d, size: %d, iter: %d, patterns: %p, patternSize: %d, list: %p\n", rank, &rowStart, numRowsPerProcessor, size, iter, patterns, patternSize, list);
 
@@ -241,30 +241,30 @@ int main( int argc, char** argv)
     for (iter = 0; iter < iterations; iter++) {
         // Every processor has all info. Need to decide what rows to take
         //searchPatternsNonSquare( &rowStart, numRowsPerProcessor, size, iter, patterns, patternSize, list);
-        printf("Rank %d search %d - %d\n", rank, startRow, endRow);
+        //printf("Rank %d search %d - %d\n", rank, startRow, endRow);
         searchPatternsNonSquare(curW, startRow, endRow, size, iter, patterns, patternSize, list);
 
         //printf("Rank %d finished searching patterns, printing list\n", rank);
         //printList( list );
         //printf("Rank %d finished printing list\n", rank);
 
-        printf("Rank %d starting to evolve world @ iteration %d\n", rank, iter);
+        //printf("Rank %d starting to evolve world @ iteration %d\n", rank, iter);
         evolveWorldNonSquare(curW, startRow, nextW, startRow + numRowsPerProcessor - 1, size);
-        printf("Rank %d done evolving world: World = \n", rank);
+        //printf("Rank %d done evolving world: World = \n", rank);
 
         MPI_Barrier(MPI_COMM_WORLD);
 
         // After evolving - send your version of the world back to master
         // Each one sends their start row till end row
         // For all processors - we need to send the same amount of data
-        printf("Rank %d - rowToSendStart: %d rowToSendEnd %d elementsToSend: %d\n", rank, rowToSendStart, rowToSendEnd, elementsToSend);
+        //printf("Rank %d - rowToSendStart: %d rowToSendEnd %d elementsToSend: %d\n", rank, rowToSendStart, rowToSendEnd, elementsToSend);
 
         // Put into curW[1] because we want to avoid the 0th row
         MPI_Allgather(nextW[rowToSendStart], elementsToSend, MPI_CHAR, curW[1], elementsToSend, MPI_CHAR, MPI_COMM_WORLD);
 
         MPI_Barrier(MPI_COMM_WORLD);
 
-
+/*
         for (int proc = 0; proc < numprocs; proc++) {
             if (proc == rank) {
                 //printf("Rank %d starting to evolve world at address: %p\n", rank, nextWRowStart);
@@ -281,42 +281,8 @@ int main( int argc, char** argv)
                 MPI_Barrier(MPI_COMM_WORLD);
             }
         }
+*/
 
-
-        // At this point - curW is updated with the latest world
-        // and list has the latest values
-
-        /*
-        int process_to_send_evolution = (iter % (numprocs - 1)) + 1;
-        if (rank == ROOT_PROCESS) {
-
-            printf("Process that should send evolution: %d\n", process_to_send_evolution);
-            // Search the current iteration
-            searchPatterns( curW, size, iter, patterns, patternSize, list);
-
-            MPI_Status status;
-            // Receive the new world from the other processor
-            MPI_Recv(curW[0], (size + 2) * (size + 2), MPI_CHAR, process_to_send_evolution, iter, MPI_COMM_WORLD, &status);
-
-        } else if (rank >= 1) {
-
-            // everyone evolves the current world
-            evolveWorld( curW, nextW, size);
-
-            // Make the "current world" be the evolved nextW world
-            // Reuse the previous current world space by making it the "next world"
-            temp = curW;
-            curW = nextW;
-            nextW = temp;
-
-            // Take turns with other processes to send the data back
-            if (rank == process_to_send_evolution) {
-
-                // Send the evolved world back
-                MPI_Send(curW[0], (size + 2) * (size + 2), MPI_CHAR, ROOT_PROCESS, iter, MPI_COMM_WORLD);
-            }
-        }
-        */
     }
 
     for (int proc = 1; proc < numprocs; proc++) {
@@ -329,13 +295,13 @@ int main( int argc, char** argv)
             //printf("Rank %d printing final list: \n", rank);
             //printList(list);
 
-            printf("Rank %d converting list to array, list: \n", rank);
+            //printf("Rank %d converting list to array, list: \n", rank);
             int* matchArray = matchlistToArray(list);
-            printMatchArray(matchArray, list->nItem);
+            //printMatchArray(matchArray, list->nItem);
 
             int matchArraySize = list->nItem;
 
-            printf("Rank %d sending\n", rank);
+            //printf("Rank %d sending\n", rank);
             MPI_Send(&matchArraySize, 1, MPI_INT, ROOT_PROCESS, tag, MPI_COMM_WORLD);
 
             if (matchArraySize > 0) {
@@ -353,27 +319,27 @@ int main( int argc, char** argv)
             int matchArraySize = 0;
             MPI_Status status;
 
-            printf("Root receiving from rank %d\n", proc);
+            //printf("Root receiving from rank %d\n", proc);
             MPI_Recv(&matchArraySize, 1, MPI_INT, proc, tag, MPI_COMM_WORLD, &status);
-            printf("Root completed match array size reception from rank %d\n", proc);
+            //printf("Root completed match array size reception from rank %d\n", proc);
 
             if (matchArraySize > 0) {
                 int numberOfInts = matchArraySize * 4;
                 int* matchArrayRecv = malloc(numberOfInts * sizeof(int));
 
-                printf("Match array recv: %p\n", matchArrayRecv);
+                //printf("Match array recv: %p\n", matchArrayRecv);
 
-                printf("Root receiving <<MATCHARRAY>> from rank %d\n", proc);
+                //printf("Root receiving <<MATCHARRAY>> from rank %d\n", proc);
                 MPI_Recv(matchArrayRecv, numberOfInts, MPI_INT, proc, tag, MPI_COMM_WORLD, &status);
-                printf("Root completed match array ACTUAL reception from rank %d\n", proc);
+                //printf("Root completed match array ACTUAL reception from rank %d\n", proc);
 
                 for (int i = 0; i < numberOfInts; i+=4) {
-                    printf("match array recv: %p\n", matchArrayRecv);
-                    printf("i = %d, num = %d\n", i, numberOfInts);
-                    printf("Iter: %d", matchArrayRecv[i]);
-                    printf(" Row: %d", matchArrayRecv[i+1]);
-                    printf(" Column: %d", matchArrayRecv[i+2]);
-                    printf(" Pattern: %d\n", matchArrayRecv[i+3]);
+                    //printf("match array recv: %p\n", matchArrayRecv);
+                    //printf("i = %d, num = %d\n", i, numberOfInts);
+                    //printf("Iter: %d", matchArrayRecv[i]);
+                    //printf(" Row: %d", matchArrayRecv[i+1]);
+                    //printf(" Column: %d", matchArrayRecv[i+2]);
+                    //printf(" Pattern: %d\n", matchArrayRecv[i+3]);
                     insertEnd(list, matchArrayRecv[i], matchArrayRecv[i+1], matchArrayRecv[i+2], matchArrayRecv[i+3]);
 
                 }
@@ -391,7 +357,7 @@ int main( int argc, char** argv)
 
     if (rank == ROOT_PROCESS) {
 
-        printf("FINAL LIST: \n");
+        //printf("\nFINAL LIST: \n");
         // Prints the match list
         printList( list );
 
@@ -407,7 +373,6 @@ int main( int argc, char** argv)
 
     fflush(stdin);
     fflush(stdout);
-    exit(0);
 
 /*
     for (iter = 0; iter < iterations; iter++) {
@@ -443,7 +408,7 @@ int main( int argc, char** argv)
     /*************************
         Clean up
     *************************/
-    /*
+
     deleteList( list );
 
     freeSquareMatrix( curW );
@@ -453,7 +418,7 @@ int main( int argc, char** argv)
     freeSquareMatrix( patterns[1] );
     freeSquareMatrix( patterns[2] );
     freeSquareMatrix( patterns[3] );
-    */
+
     // Finalize MPI
     MPI_Finalize();
 
