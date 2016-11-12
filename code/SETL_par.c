@@ -135,10 +135,19 @@ int main( int argc, char** argv)
         DO COMMUNICATION
     *************************/
 
+    long long commstart = wallClockTime();
+
+    int basicInfo[3] = {patternSize, size, iterations};
+
+    MPI_Bcast(basicInfo, 3, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
+    patternSize = basicInfo[0];
+    size = basicInfo[1];
+    iterations = basicInfo[2];
+
     // Send sizes over to be used throughout
-    MPI_Bcast(&patternSize, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
-    MPI_Bcast(&size, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
-    MPI_Bcast(&iterations, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
+    //MPI_Bcast(&patternSize, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
+    //MPI_Bcast(&size, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
+    //MPI_Bcast(&iterations, 1, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
 
     //printf("Process: %d - Patternsize: %d, Size: %d, Iterations: %d\n", rank, patternSize, size, iterations);
 
@@ -209,7 +218,10 @@ int main( int argc, char** argv)
     // Rows = numRowsPerProcessor, Size = Cols
     //printf("Processor rank %d: searchPatternsNonSquare(&rowStart: %p, numRowsPerProcessor: %d, size: %d, iter: %d, patterns: %p, patternSize: %d, list: %p\n", rank, &rowStart, numRowsPerProcessor, size, iter, patterns, patternSize, list);
 
+    long long commend = wallClockTime();
 
+    printf("Parallel SETL comms took %1.2f seconds\n",
+        ((float)(commend - commstart))/1000000000);
     // All processors iterate
     for (iter = 0; iter < iterations; iter++) {
         // Every processor has all info. Need to decide what rows to take
