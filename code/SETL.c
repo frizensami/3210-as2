@@ -112,7 +112,6 @@ int main( int argc, char** argv)
     curW = readWorldFromFile(argv[1], &size);
     nextW = allocateSquareMatrix(size+2, DEAD);
 
-
     printf("World Size = %d\n", size);
 
     iterations = atoi(argv[2]);

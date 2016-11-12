@@ -89,11 +89,10 @@ int main( int argc, char** argv)
         /**************************
             Debug printing
         **************************/
-        printf("World Size = %d\n", size);
-        printf("Iterations = %d\n", iterations);
-        printf("Pattern size = %d\n", patternSize);
-        printf("Patterns (N, E, S, W): \n");
-
+        //printf("World Size = %d\n", size);
+        //printf("Iterations = %d\n", iterations);
+        //printf("Pattern size = %d\n", patternSize);
+        //printf("Patterns (N, E, S, W): \n");
 
         if (size % numprocs != 0 ) {
             printf("Incorrect number of processors, got %d: must evenly divide size %d\n", numprocs, size);
@@ -173,22 +172,6 @@ int main( int argc, char** argv)
 
     // For this algo iter: broadcast the entire board and patterns
     MPI_Bcast(curW[0], (size + 2) * (size + 2), MPI_CHAR, ROOT_PROCESS, MPI_COMM_WORLD);
-/*
-    for (int proc = 0; proc < numprocs; proc++) {
-        if (proc == rank) {
-            printf("Rank %d received current World: \n", rank);
-            printSquareMatrix(curW, size+2);
-            MPI_Barrier(MPI_COMM_WORLD);
-        } else {
-            MPI_Barrier(MPI_COMM_WORLD);
-        }
-    }
-*/
-    // At this point: Every process has all the relevant data to perform computations
-    // Processes just must know what their role is in the overall scheme of things
-    // Processor 0: Always does pattern searching
-    // Processor 1: Does evolution (part 1 or all)
-    // Processor 2: Does evolution (part 2)
 
     // Assume even division of rows (this calculation is without accounting for the 'halo' method)
     int numRowsPerProcessor = size / numprocs;
@@ -263,25 +246,6 @@ int main( int argc, char** argv)
         MPI_Allgather(nextW[rowToSendStart], elementsToSend, MPI_CHAR, curW[1], elementsToSend, MPI_CHAR, MPI_COMM_WORLD);
 
         MPI_Barrier(MPI_COMM_WORLD);
-
-/*
-        for (int proc = 0; proc < numprocs; proc++) {
-            if (proc == rank) {
-                //printf("Rank %d starting to evolve world at address: %p\n", rank, nextWRowStart);
-                //evolveWorldNonSquare(curW, startRow, nextW, startRow + numRowsPerProcessor - 1, size);
-                printf("Rank %d done allgathering: World = \n", rank);
-                printSquareMatrix(curW, size+2);
-
-                //evolveWorld(curW, nextW, size);
-                //printf("Rank %d done evolving world expected: World = \n", rank);
-                //printSquareMatrix(nextW, size+2);
-
-                MPI_Barrier(MPI_COMM_WORLD);
-            } else {
-                MPI_Barrier(MPI_COMM_WORLD);
-            }
-        }
-*/
 
     }
 
@@ -359,7 +323,16 @@ int main( int argc, char** argv)
 
         //printf("\nFINAL LIST: \n");
         // Prints the match list
-        printList( list );
+        //printList( list );
+
+        MATCH* matches = matchlistToMatchArray(list);
+
+        //printf("Printing match struct array: \n");
+        //printMatchStructArray(matches, list->nItem);
+
+        //printf("Sorting match struct array: \n");
+        qsort(matches, list->nItem, sizeof(MATCH), matchSortFunc);
+        printMatchStructArray(matches, list->nItem);
 
         //Stop timer
         after = wallClockTime();

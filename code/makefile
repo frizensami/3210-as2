@@ -1,5 +1,7 @@
 all:	run
 
+compile: SETL SETL_par
+
 SETL:	SETL.c
 	gcc -o SETL SETL.c
 
