@@ -33,3 +33,8 @@ runlargeseq: SETL
 runlongseq: SETL
 	./SETL ../data/simple.w 20 ../data/simple.p
 
+runlargelong: SETL_par
+	mpirun -np 10 ./SETL_par ../data/random1000.w 50 ../data/simple.p
+
+runlargelongseq: SETL
+	./SETL ../data/random1000.w 50 ../data/simple.p
