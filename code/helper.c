@@ -1,6 +1,10 @@
 /***********************************************************
   Helper functions
 ***********************************************************/
+
+#define _POSIX_C_SOURCE 199309L
+struct timespec time1, time2;
+
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>

@@ -1,0 +1,83 @@
+make: Nothing to be done for `compile'.
+Checking normal
+1c1,5
+< mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
+---
+> ./SETL ../data/simple.w 10 ../data/simple.p
+> World Size = 20
+> Iterations = 10
+> Pattern size = 3
+> List size = 40
+42c46
+< Parallel SETL took 0.00 seconds
+---
+> Sequential SETL took 0.00 seconds
+Checking long
+1c1,5
+< mpirun -np 2 ./SETL_par ../data/simple.w 20 ../data/simple.p
+---
+> ./SETL ../data/simple.w 20 ../data/simple.p
+> World Size = 20
+> Iterations = 20
+> Pattern size = 3
+> List size = 62
+64c68
+< Parallel SETL took 0.00 seconds
+---
+> Sequential SETL took 0.00 seconds
+Checking large
+1c1,5
+< mpirun -np 5 ./SETL_par ../data/random1000.w 10 ../data/simple.p
+---
+> ./SETL ../data/random1000.w 10 ../data/simple.p
+> World Size = 1000
+> Iterations = 10
+> Pattern size = 3
+> List size = 167643
+167645c167649
+< Parallel SETL took 0.99 seconds
+---
+> Sequential SETL took 1.14 seconds
+Checking largelong
+1c1,5
+< mpirun -np 10 ./SETL_par ../data/random1000.w 50 ../data/simple.p
+---
+> ./SETL ../data/random1000.w 50 ../data/simple.p
+> World Size = 1000
+> Iterations = 50
+> Pattern size = 3
+> List size = 722705
+722707c722711
+< Parallel SETL took 4.95 seconds
+---
+> Sequential SETL took 5.42 seconds
+Checking diff numbers of procs
+5 procs
+1c1,5
+< mpirun -np 5 ./SETL_par ../data/simple.w 10 ../data/simple.p
+---
+> ./SETL ../data/simple.w 10 ../data/simple.p
+> World Size = 20
+> Iterations = 10
+> Pattern size = 3
+> List size = 40
+42c46
+< Parallel SETL took 0.00 seconds
+---
+> Sequential SETL took 0.00 seconds
+======================================================================================
+
+			Resource Usage on 2016-11-12 15:08:51.483453:
+
+	JobId: 2878696.wlm01  
+	Project: _pbs_project_default 
+	Exit Status: 1
+	NCPUs Requested: 2				NCPUs Used: 2
+							CPU Time Used: 00:01:00
+	Memory Requested: 110100480kb 				Memory Used: 174640kb
+							Vmem Used: 2248468kb
+	Walltime requested: 01:00:00 			Walltime Used: 00:00:09
+	
+	Execution Nodes Used: (std0467:ncpus=2)
+	
+ ======================================================================================

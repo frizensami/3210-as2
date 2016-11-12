@@ -3,10 +3,10 @@ all:	run
 compile: SETL SETL_par
 
 SETL:	SETL.c
-	gcc -o SETL SETL.c
+	gcc --std=c99 -o SETL SETL.c -lrt
 
 SETL_par: SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h
-	mpicc -o SETL_par SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h
+	mpicc --std=c99 -o SETL_par SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h -lrt
 
 genWorld:	genWorld.c
 	gcc -o genWorld genWorld.c
