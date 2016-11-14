@@ -6,7 +6,7 @@ SETL:	SETL.c
 	gcc --std=c99 -o SETL SETL.c -lrt
 
 SETL_par: SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h
-	mpicc --std=c99 -o SETL_par SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h -lrt
+	mpicc -O3 --std=c99 -o SETL_par SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h -lrt
 
 genWorld:	genWorld.c
 	gcc -o genWorld genWorld.c
@@ -21,7 +21,7 @@ runlabseq: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
 	
 runlabsmall: SETL_par
-	mpirun -np 8 ./SETL_par ../data/random3000.w 100 ../data/glider5.p
+	mpirun -np 8 ./SETL_par ../data/random3000.w 10 ../data/glider5.p
 
 runlabseqsmall: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
