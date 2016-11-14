@@ -21,7 +21,7 @@ runlabseq: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
 	
 runlabsmall: SETL_par
-	mpirun -np 8 ./SETL_par ../data/random3000.w 10 ../data/glider5.p
+	mpirun -np 8 ./SETL_par ../data/random3000.w 100 ../data/glider5.p
 
 runlabseqsmall: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
