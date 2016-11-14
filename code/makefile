@@ -15,13 +15,13 @@ run: SETL_par
 	mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
 
 runlab: SETL_par
-	mpirun -np 15 --machinefile machinefile.lab ./SETL_par ../data/random3000.w 100 ../data/glider5.p
+	mpirun -np 12 --machinefile machinefile.lab ./SETL_par ../data/random3000.w 100 ../data/glider5.p
 
 runlabseq: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
 	
 runlabsmall: SETL_par
-	mpirun -np 8 ./SETL_par ../data/random3000.w 100 ../data/glider5.p
+	mpirun -np 6 ./SETL_par ../data/random3000.w 100 ../data/glider5.p
 
 runlabseqsmall: SETL
 	./SETL ../data/random3000.w 100 ../data/glider5.p
