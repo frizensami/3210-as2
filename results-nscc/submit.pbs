@@ -1,0 +1,11 @@
+#!/bin/bash
+#PBS -q largemem
+#PBS -l select=1:ncpus=40:mpiprocs=40
+
+module load intelmpi
+cd /home/users/nus/e0002863/3210-as2/code
+
+#./test.sh
+make compile
+echo "MPI 40 procs random3000 100 iter simple"
+mpirun -np 40 ./SETL_par ../data/random3000.w 100 ../data/glider5.p

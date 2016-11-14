@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -q normal
+#PBS -l select=1
+
+module load intelmpi
+cd /home/users/nus/e0002863/3210-as2/code
+
+#./test.sh
+echo "Sequential"
+./SETL ../data/random3000.w 100 ../data/glider5.p

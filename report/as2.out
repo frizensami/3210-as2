@@ -8,3 +8,7 @@
 \BOOKMARK [2][-]{subsection.1.4}{Mapping}{section.1}% 8
 \BOOKMARK [1][-]{section.2}{Results}{}% 9
 \BOOKMARK [2][-]{subsection.2.1}{NSCC}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Optimizations}{subsection.2.1}% 11
+\BOOKMARK [2][-]{subsection.2.2}{Lab}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Cluster vs i7 only tests}{subsection.2.2}% 13
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Number of cores tests}{subsection.2.2}% 14

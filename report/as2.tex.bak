@@ -82,14 +82,125 @@ item{If root task: sort and display the results}
 \end{enumerate}
 
 \subsection{Mapping}
-I decided to constrain the number of processors to be used to be only multiples of the world size (e.g. for a world size of 20: 1, 2, 4, 5 processors were acceptable. Note that certain processor counts are not acceptable as I also set a hard limit on how many rows a processor must have as larger than or equal to the pattern size to reduce overhead.) A trivial mapping of one processor to one task was used. 
+I decided to constrain the number of processors to be used to be \textbf{only factors of the world size} (e.g. for a world size of 20: 1, 2, 4, 5 processors were acceptable. Note that certain processor counts are not acceptable as I also set a hard limit on how many rows a processor must have as larger than or equal to the pattern size to reduce overhead.) A trivial mapping of one processor to one task was used. 
 
 \newpage	
 
 \section{Results}
 
-\subsection{NSCC}
 
-The execution context for NSCC was: \textbf{48 CPUs}, 
+The execution context in general was: \\
+
+- \textbf{random3000.w world}\\
+- \textbf{glider5.p pattern} \\
+- \textbf{100 iterations}\\
+
+This was specifically chosen to be as close to the real benchmark as possible.
+
+
+\subsection{NSCC}
+The additional specific execution contexts for NSCC were: \\
+
+- \textbf{40 cores} (max for that instance) \\
+- \textbf{40 mpiprocs}, \textbf{40 copies of the program} (i.e. -np 50)\\
+
+In summary, after optimizations: 
+\begin{enumerate} 
+\item{The sequential version of SETL took \textbf{125.20} seconds on the NSCC machine on average}
+\item{The parallel version of SETL took \textbf{2.11} seconds on the NSCC cluster on average}
+\item{The speedup obtained is thus \textbf{59.33x}, and the efficiency is \textbf{1.48}, given 40 execution units.}
+\end{enumerate}
+
+\subsubsection{Optimizations}
+
+We note that the efficiency of this execution is superlinear - 1.48 > theoretical maximum of 1. \\
+
+Only limited optimization had to be done (just finding the correct number of procesors) on the NSCC machine as speedup kept increasing until close to the limit of 48 cores. My version of SETL\_par works beyond this limit but I did not count those results in this report. The results take this form: 
+
+\begin{figure}[h]
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+\hline
+Number of cores used & Time Taken (Parallel, s) \\
+\hline
+1 & 211.02 \\
+10 & 221.93\\
+20 & 3.48 \\
+30 & 2.54 \\
+40 & 2.11  \\
+50 & 3.27\\
+\hline
+\end{tabular}
+\end{center}
+\caption{Performance characteristics of the NSCC cluster with increasing core counts}
+\end{figure}
+
+While it's unclear why performance dipped so much after the 10 core mark, perhaps memory copying or the some scheduling/thrashing barrier being overcome - it's clear that the optimal number is 40. 
+
+\newpage
+
+\subsection{Lab}
+The additional specific execution contexts for the lab machine were: \\
+
+- \textbf{8 cores} (-np 8), run from \textbf{only} the i7 node. \\
+
+In summary, after optimizations: 
+\begin{enumerate} 
+\item{The sequential version of SETL took \textbf{112.33} seconds on the lab machine on average}
+\item{The parallel version of SETL took \textbf{9.16} seconds on the lab cluster (only the i7 was used) on average}
+\item{The speedup obtained is thus \textbf{12.26x}, and the efficiency is \textbf{1.53}, given 8 execution units. }
+\end{enumerate}
+
+The first thing we note is that the efficiency of this configuration exceeds the theoretical maximum limit of 1, indicating that we achieved a superlinear speedup. The second thing we note is that only the i7 machine was used instead of taking advantage of the whole cluster. This was due to lower performance being observed under the given parameters when the work was distributed off the i7 machine, and this is very likely due to the overhead of sending data and synchronizing between the lab cluster machines. 
+
+\subsubsection{Cluster vs i7 only tests}
+
+Some selected results from the combined testing of machinefile configurations and the number of processing units (-np) are shown below: \\
+
+\begin{figure}[h]
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+ Number of cores used & Machinefile & Time Taken (Parallel, s) \\
+ \hline
+ 8 & Only i7 & 9.16 \\
+ 8 & Lab cluster & 84.94s \\
+ 12 & Lab cluster & 74.05s  \\
+ 15 & Lab cluster & 79.05s  \\
+ \hline
+\end{tabular}
+\end{center}
+\caption{Performance characteristics of the lab cluster versus the single i7 machine}
+\end{figure}
+
+Many other test configurations are omitted for brevity. Runs of \textit{perf stat} indicate that the lab cluster configurations ran at 1.31 instructions per cycle whereas the pure i7 configuration ran at 1.43 instructions per cycle, which is a large difference considering then number of cycles executed. Many other characteristics like the branch prediction rate favour the i7 only configuration. However, the main difference is likely to be the memory access and communication time due to the memory locality in the i7 machine versus the distributed memory layout of the cluster. \\
+
+\newpage
+
+\subsubsection{Number of cores tests}
+
+
+The 8 core usage on the i7 machine was experimentally tested and proven to be the optimal number - which led me to come up with the final configuration.  
+
+\begin{figure}[h]
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+Number of cores used & Time Taken (Parallel, s) \\
+\hline
+1 & 33.38 \\
+2 & 17.49\\
+4 & 9.40 \\
+6 & 11.36 \\
+8 & 9.16  \\
+10 & 13.78\\
+
+ \hline
+\end{tabular}
+\end{center}
+\caption{Performance characteristics of the i7 machine with reference to processors used}
+\end{figure}
+
+Hence the 8-core setup was chosen to minimize overall execution time.
 
 \end{document}

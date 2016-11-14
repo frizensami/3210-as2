@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.8.1)  12 NOV 2016 23:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.8.1)  14 NOV 2016 13:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -991,28 +991,69 @@ Underfull \hbox (badness 10000) in paragraph at lines 71--72
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+Underfull \hbox (badness 10000) in paragraph at lines 92--93
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 101.
+
+Underfull \hbox (badness 10000) in paragraph at lines 94--97
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--106
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--117
+
+ []
+
 [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 101.
+Underfull \hbox (badness 10000) in paragraph at lines 143--144
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--159
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--177
+
+ []
+
+[5]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 206.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 206.
  (./as2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 101.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 101.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 206.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 206.
 Package rerunfilecheck Info: File `as2.out' has not changed.
-(rerunfilecheck)             Checksum: F4E73920F1D45F8FD51F607AF7CEADAC;611.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
+(rerunfilecheck)             Checksum: 77F9077D0051C1D194E8351A7FFD73CD;902.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 206.
  ) 
 Here is how much of TeX's memory you used:
- 15848 strings out of 494910
- 278893 string characters out of 6179837
+ 15869 strings out of 494910
+ 279138 string characters out of 6179837
  367215 words of memory out of 5000000
- 18819 multiletter control sequences out of 15000+600000
+ 18825 multiletter control sequences out of 15000+600000
  12750 words of font info for 49 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 56i,6n,55p,557b,325s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,8n,55p,610b,325s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texli
@@ -1020,10 +1061,10 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmti12.pfb>
-Output written on as2.pdf (4 pages, 88292 bytes).
+Output written on as2.pdf (6 pages, 96704 bytes).
 PDF statistics:
- 125 PDF objects out of 1000 (max. 8388607)
- 110 compressed objects within 2 object streams
- 27 named destinations out of 1000 (max. 500000)
- 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 166 PDF objects out of 1000 (max. 8388607)
+ 149 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 125 words of extra memory for PDF output out of 10000 (max. 10000000)
 

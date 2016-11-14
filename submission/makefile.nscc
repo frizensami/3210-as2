@@ -1,0 +1,2 @@
+SETL_par: SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h
+	mpicc -O3 --std=c99 -o SETL_par SETL_par.c helper.h helper.c squarematrix.h squarematrix.c world.h world.c match.h match.c search.c search.h -lrt
