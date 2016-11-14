@@ -1,0 +1,101 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+%\usepackage[center]{titlesec}
+\newlength\tindent
+\setlength{\tindent}{\parindent}
+\setlength{\parindent}{0pt}
+\renewcommand{\indent}{\hspace*{\tindent}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{algorithmic}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\graphicspath{ {img/} }
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{bb} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=black!50]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\author{Sriram Sami}
+\title{CS3210 Assignment 2 Report}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+
+\section{Approach}
+
+\subsection{Partitioning}
+
+The SETL problem can be partitioned in two ways: \textbf{Domain} and \textbf{Functional}. 
+
+\subsubsection{Domain Decomposition}
+
+Generally, the whole SETL problem involves \textbf{searching for patterns} in the board, \textbf{evolving} the board, and repeatedly performing these steps for the given number of iterations.\\
+
+One can note that, for any $k_1 \times k_2$ sized area of the board, where $k_1$ and $k_2$ are respectively less than the overall length x height ($size \times size$), we can add a buffer area of size $patternsize - 1$ (bounded by the size of the board) in all four directions around the $k_1 \times k_2$ area, and then no other infomation is necessary to perform a correct pattern match + evolution on that area (i.e. there is a way to split the board up into independant parts with some overlap in elements). \\
+
+Hence this $MAX(k_1 + patternsize - 1, size) \times MAX(k_2 + patternsize - 1, size)$ area is the most basic and independant chunk of data in this problem, and we should also observe that as $k_1$ and $k_2$ increases, the ratio of overlapping area between these data blocks to the actual area being pattern-searched and evolved decreases i.e. the overhead decreases. 
+
+\subsubsection{Functional Decomposition}
+
+Another way of approaching the problem is to look at the two main functions in the problem: \textit{searching} and \textit{evolving}. Multiple computation units could be focused on searching during a particular iteration whereas other computation units could perform evolution independantly of the pattern searching and communicate the results back to the pattern-searching components. 
+
+\subsubsection{Evaluation}
+The issue with the functional decomposition approach is that the pattern searching components depend on the speed of the evolution components and it's highly likely that they will not take the same amount of time, meaning there is very likely going to be unused processor time on the evolution components' side even in the best case. Therefore, the domain-decomposition method seems the most useful in this particular scenario - since it can be parallelized independantly to many processors, but \textit{within a single iteration}.
+
+\newpage
+
+\subsection{Communication}
+
+\begin{enumerate}
+\item{The root computation unit has to read the world file and pattern file and send the world and 4 patterns over to all other computation unit.}
+\item{After each iteration, every computation unit must share the slice of world it has evolved to every other computation unit: can be done with \textit{MPI\_Alltoall}.}
+\item{After all iterations are completed, each computation unit must send its list of matches back to the root computation unit.}
+\end{enumerate}
+
+\subsection{Agglomeration}
+To reduce overlap in both the column and row dimensions - for this situation, I decided to a \textbf{row-based approach} to partitioning the data into tasks. This also simplified communication since contiguous blocks of data could be send from processor to processor - and the memory accesses had the added benefit of limiting cache misses due to their spatial proximity. \\
+
+Hence the (simplified) overall work for one task is to: \\
+\begin{enumerate}
+\item{If root task: read the game world and patterns and broadcast to all tasks}
+\item{Receive the game world and the list of patterns}
+\item{Receive the rows that the particular task is responsible for pattern-searching and evolving}
+\item{Pattern-search the specified rows, append the results to the result list}
+\item{Evolve the specified rows}
+\item{Perform an MPI\_Alltoall operation - all tasks should now have the most updated/evolved world}
+\item{Proceed with the next iteration until all iterations are complete}
+\item{Send the result list back to the root task}
+item{If root task: sort and display the results}
+\end{enumerate}
+
+\subsection{Mapping}
+I decided to constrain the number of processors to be used to be only multiples of the world size (e.g. for a world size of 20: 1, 2, 4, 5 processors were acceptable. Note that certain processor counts are not acceptable as I also set a hard limit on how many rows a processor must have as larger than or equal to the pattern size to reduce overhead.) A trivial mapping of one processor to one task was used. 
+
+\newpage	
+
+\section{Results}
+
+\subsection{NSCC}
+
+The execution context for NSCC was: \\
+
+- \textbf{48 CPUs} (max for that instance) \\
+- \textbf{50 mpiprocs}, \textbf{50 processors} (i.e. -np 50)\\
+- \textbf{random3000.w world}\\
+- \textbf{100 iterations}\\
+- \textbf{glider5.p pattern}. 
+
+\end{document}
