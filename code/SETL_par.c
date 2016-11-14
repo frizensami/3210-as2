@@ -135,8 +135,6 @@ int main( int argc, char** argv)
         DO COMMUNICATION
     *************************/
 
-    long long commstart = wallClockTime();
-
     int basicInfo[3] = {patternSize, size, iterations};
 
     MPI_Bcast(basicInfo, 3, MPI_INT, ROOT_PROCESS, MPI_COMM_WORLD);
@@ -218,10 +216,6 @@ int main( int argc, char** argv)
     // Rows = numRowsPerProcessor, Size = Cols
     //printf("Processor rank %d: searchPatternsNonSquare(&rowStart: %p, numRowsPerProcessor: %d, size: %d, iter: %d, patterns: %p, patternSize: %d, list: %p\n", rank, &rowStart, numRowsPerProcessor, size, iter, patterns, patternSize, list);
 
-    long long commend = wallClockTime();
-
-    printf("Parallel SETL comms took %1.2f seconds\n",
-        ((float)(commend - commstart))/1000000000);
     // All processors iterate
     for (iter = 0; iter < iterations; iter++) {
         // Every processor has all info. Need to decide what rows to take
@@ -297,24 +291,11 @@ int main( int argc, char** argv)
 
         MATCH* matches = matchlistToMatchArray(list);
 
-        long long beforesort = wallClockTime();
-
         // Sort the match array in order
         qsort(matches, list->nItem, sizeof(MATCH), matchSortFunc);
-
-        long long aftersort = wallClockTime();
-        printf("Parallel SETL sort took %1.2f seconds\n",
-            ((float)(aftersort - beforesort))/1000000000);
-
-        long long beforeprint = wallClockTime();
         printMatchStructArray(matches, list->nItem);
-        long long afterprint = wallClockTime();
 
 
-        printf("Parallel SETL print took %1.2f seconds\n",
-            ((float)(afterprint - beforeprint))/1000000000);
-
-        //Stop timer
         after = wallClockTime();
 
         printf("Parallel SETL took %1.2f seconds\n",

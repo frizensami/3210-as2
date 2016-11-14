@@ -14,6 +14,10 @@ genWorld:	genWorld.c
 run: SETL_par
 	mpirun -np 2 ./SETL_par ../data/simple.w 10 ../data/simple.p
 
+runlab: SETL_par
+	mpirun -np 50 --machinefile machinefile.lab ./SETL_par ../data/random3000.w 10 ../data/glider5.p
+	
+
 runlong: SETL_par
 	mpirun -np 2 ./SETL_par ../data/simple.w 20 ../data/simple.p
 
